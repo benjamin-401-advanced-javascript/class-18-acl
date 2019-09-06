@@ -15,17 +15,18 @@ const userSchema = mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   email: { type: String, required: true },
-  role: { type: String, required: true, default: 'user', enum: ['user', 'admin', 'editor'] }
+  role: { type: String, required: true, default: 'user', enum: ['user', 'admin', 'editor', 'superuser'] }
 }, {
-  toObject: {
-    virtuals: true
-  },
-  toJSON: {
-    virtuals: true
-  }
-});
+    toObject: {
+      virtuals: true
+    },
+    toJSON: {
+      virtuals: true
+    }
+  });
 
 const capabilities = {
+  superuser: ['create', 'read', 'update', 'delete', 'superuser'],
   admin: ['create', 'read', 'update', 'delete'],
   editor: ['create', 'read', 'update'],
   user: ['read'],
@@ -42,7 +43,6 @@ userSchema.pre('save', async function () {
       userRole = new Role({ role: this.role, capabilities: capabilities[this.role] });
       await userRole.save();
     }
-    console.log(userRole);
   } catch (err) {
     console.Error(`ERROR ${err}`);
   }
@@ -100,8 +100,6 @@ userSchema.methods.generateToken = function (type) {
   if (type !== 'key' && !!TOKEN_EXPIRE) {
     options = { expiresIn: TOKEN_EXPIRE }
   }
-
-  console.log(token, options);
   return jwt.sign(token, SECRET, options);
 }
 
