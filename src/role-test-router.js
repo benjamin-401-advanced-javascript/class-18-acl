@@ -13,6 +13,7 @@ apiRouter.get('/public-stuff', (req, res, next) => {
 })
 
 apiRouter.get('/hidden-stuff', auth(), (req, res, next) => {
+  console.log('ATTACHED USER ROLE', req.user)
   res.send('success')
 })
 
