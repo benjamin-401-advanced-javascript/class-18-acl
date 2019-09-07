@@ -9,35 +9,35 @@ const auth = require('./middleware/auth.js');
 const oauth = require('./oauth/google.js');
 
 apiRouter.get('/public-stuff', (req, res, next) => {
-  req.send('get(/public-stuff)')
+  res.send('success')
 })
 
 apiRouter.get('/hidden-stuff', auth(), (req, res, next) => {
-  req.send('get(/hidden-stuff)')
+  res.send('success')
 })
 
 apiRouter.get('/something-to-read', auth('read'), (req, res, next) => {
-  req.send('get(/something-to-read)')
+  res.send(req.user.can('read'))
 })
 
 apiRouter.post('/create-a-thing', auth('create'), (req, res, next) => {
-  req.send('post(/create-a-thing)')
+  res.send(req.user.can('create'))
 })
 
 apiRouter.put('/update', auth('update'), (req, res, next) => {
-  req.send('put(/update)')
+  res.send(req.user.can('update'))
 })
 
 apiRouter.patch('/jp', auth('update'), (req, res, next) => {
-  req.send('patch(/jp)')
+  res.send(req.user.can('update'))
 })
 
 apiRouter.delete('/bye-bye', auth('delete'), (req, res, next) => {
-  req.send('delete(/bye-bye)')
+  res.send(req.user.can('delete'))
 })
 
 apiRouter.get('/everything', auth('superuser'), (req, res, next) => {
-  req.send('get(/everything)')
+  res.send(req.user.can('superuser'))
 })
 
 module.exports = apiRouter;

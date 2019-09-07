@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const errorHandler = require('./middleware/500.js');
 const notFound = require('./middleware/404.js');
 const routes = require('./router.js');
+const roleTestRoutes = require('./role-test-router.js');
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(routes);
+app.use(roleTestRoutes);
 
 app.use('*', notFound);
 app.use(errorHandler);
