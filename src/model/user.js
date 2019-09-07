@@ -25,6 +25,23 @@ const userSchema = mongoose.Schema({
     }
   });
 
+userSchema.virtual('capabilities', {
+  ref: 'roles',
+  localField: 'role',
+  foreignField: 'role',
+  justOne: true,
+});
+
+userSchema.pre('findOne', async function () {
+  console.log('FIND PREHOOK RUN')
+  try {
+    this.populate('capabilities');
+  }
+  catch (e) {
+    console.error('userSchema Find Prehook Error', e);
+  }
+});
+
 const capabilities = {
   superuser: ['create', 'read', 'update', 'delete', 'superuser'],
   admin: ['create', 'read', 'update', 'delete'],
@@ -33,10 +50,12 @@ const capabilities = {
 };
 
 userSchema.pre('save', async function () {
+  // hash password before saving it
   if (this.isModified('password')) {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
+  // if the user Role Model doesn't exist yet create it
   try {
     let userRole = await Role.findOne({ role: this.role });
     if (!userRole) {
