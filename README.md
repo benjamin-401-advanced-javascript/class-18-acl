@@ -5,9 +5,7 @@
 ### Author: Benjamin Clark
 
 ### Links and Resources
-* [submission PR](https://github.com/benjamin-401-advanced-javascript/class-05/pull/2)
-* [travis](https://www.travis-ci.com/benjamin-401-advanced-javascript/class-05)
-* [front-end](https://cf-401-class-05.herokuapp.com/)
+* [submission PR](https://github.com/benjamin-401-advanced-javascript/class-18-acl/pull/2)
 
 #### Documentation
 * [api docs](http://xyz.com) (API servers)
@@ -32,7 +30,7 @@ deletes an object in the database
 
 ### Setup
 #### `.env` requirements
-* `PORT` - Port Number
+* `PORT` - Port Number 3000
 * `MONGODB_URI` - 'mongodb://localhost:27017/class05'
 
 #### Running the app
